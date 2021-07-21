@@ -10,5 +10,8 @@
             <input type="submit" value="gogo">
         </form>
     </div>
+    <div>
+        <a href="${link}"><img src="${img}"></a>
+    </div>
 </body>
 </html>
