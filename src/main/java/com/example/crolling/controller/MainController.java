@@ -18,7 +18,7 @@ public class MainController {
     }
     @PostMapping("/")
     public String index(String text, Model model) throws IOException {
-        String url = "https://www.google.com/search?q="+text+" %EC%9C%A0%ED%8A%9C%EB%B8%8C&sxsrf=ALeKk00uH92k3B2MeaXJpkEIFweUmFnc8A:1626870262925&source=lnms&sa=X&ved=2ahUKEwjLw_eAlPTxAhVDCd4KHRk6AIwQ_AUoAHoECAEQAg&biw=736&bih=788&dpr=1";
+        String url = "https://www.google.com/search?q="+text+"+%EC%9C%A0%ED%8A%9C%EB%B8%8C&sxsrf=ALeKk01eqJ-QQtPbqLXUjxiIRUT3UneyOQ:1626873181915&source=lnms&tbm=vid&sa=X&ved=2ahUKEwi81ejwnvTxAhURxYsBHTYBBWgQ_AUoAXoECAEQAw&biw=1286&bih=788";
         Document doc = Jsoup.connect(url).get();
         Element el = doc.select("a.rGhul").first();
         String link = el.absUrl("href"); //유튜브 링크
