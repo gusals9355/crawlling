@@ -3,12 +3,17 @@ package com.example.crolling.controller;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 public class MainController {
@@ -16,23 +21,27 @@ public class MainController {
     public String index(){
         return "index";
     }
+
     @PostMapping("/")
     public String index(String text, Model model) throws IOException {
+        List<String> hrefList = new ArrayList();
+        List<String> ImgList = new ArrayList();
+//        Map<String, Object> map = new HashMap<>();
         String url = "https://www.google.com/search?q="+text+"+%EC%9C%A0%ED%8A%9C%EB%B8%8C&sxsrf=ALeKk01eqJ-QQtPbqLXUjxiIRUT3UneyOQ:1626873181915&source=lnms&tbm=vid&sa=X&ved=2ahUKEwi81ejwnvTxAhURxYsBHTYBBWgQ_AUoAXoECAEQAw&biw=1286&bih=788";
         Document doc = Jsoup.connect(url).get();
-        Element el = doc.select("a.rGhul").first();
-        String link = el.absUrl("href"); //유튜브 링크
-        System.out.println(link);
-
-        Document doc2 = Jsoup.connect(link).get();
-        String thumbnailUrl = doc2.select("link[itemprop=thumbnailUrl]")
-                .first()
-                .absUrl("href"); //유튜브 썸네일
-        System.out.println(thumbnailUrl);
-
-        model.addAttribute("link",link);
-        model.addAttribute("img",thumbnailUrl);
-
+        Elements el = doc.select("a.rGhul");
+        for (Element e:el) {
+            hrefList.add(e.attr("href"));
+            Document doc2 = Jsoup.connect(e.attr("href")).get();
+            Elements el2 = doc2.select("link[itemprop=thumbnailUrl]");
+            for(Element e2:el2){
+                ImgList.add(e2.attr("href"));
+            }
+        }
+//        map.put("hrefList",hrefList);
+//        map.put("ImgList",ImgList);
+        model.addAttribute("hrefList",hrefList);
+        model.addAttribute("ImgList",ImgList);
         return "index";
     }
 }
